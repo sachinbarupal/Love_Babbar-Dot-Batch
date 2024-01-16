@@ -38,7 +38,6 @@ const closeModal = (event) => {
     }
     
     else if(elemId == 'follow-modal-close'){
-        profile_modal.classList.remove('modal-active');
         follow_modal.classList.remove('modal-active');
         overlay.classList.remove('overlay-active');
         console.log('Follow Modal Close');

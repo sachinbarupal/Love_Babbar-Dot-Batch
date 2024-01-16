@@ -21,7 +21,7 @@
     --btnBg : #ffffff00;
     --btnFocus : #ffffffb9;
 
-    --facebook : #1771e6;
+    --linkedin : #0077b5;
     --twitter : #1c99e6;
     --instagram : #cb2770;
     --whatsapp : #2fe664;
@@ -167,7 +167,7 @@ a{
     position: fixed;
     top: 50%;
     left: 50%;
-    z-index: 100;
+    z-index: 30;
     translate: -50% -50%;
     color: var(--white);
     background: #00000088;
@@ -176,11 +176,11 @@ a{
     border-radius: 2rem;
     backdrop-filter: blur(1rem);
     transition: all 0.5s ease-in-out;
-    opacity: 0;
+    scale: 0;
 }
 
 .modal-active{
-    opacity: 1;
+    scale: 1;
 }
  
 .modal-header{
@@ -206,7 +206,7 @@ a{
 
 .modal-body .social-icons{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     margin-top: 2rem;
     column-gap: 1rem;
@@ -228,14 +228,14 @@ a{
     font-size: 2.7rem;
 }
 
-#facebook-icon{
-    color: var(--facebook);
-    border: 1px solid var(--facebook);
+#linkedin-icon{
+    color: var(--linkedin);
+    border: 1px solid var(--linkedin);
 }
 
-#facebook-icon:hover{
+#linkedin-icon:hover{
     color: var(--white);
-    background: var(--facebook);
+    background: var(--linkedin);
 }
 
 #twitter-icon{
@@ -313,7 +313,7 @@ a{
     transition: 0.5s ease-in-out;
     opacity: 0;
     pointer-events: none;
-    z-index: 30;
+    z-index: 2;
 }
 
 .overlay-active{
