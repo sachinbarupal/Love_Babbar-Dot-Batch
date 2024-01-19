@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<body>
+    
+    <div class="container">
+
+        <h1>Password Generator</h1>
+        
+        <div class="display-container">
+            <input readonly placeholder="Password" class="display" data-passwordDisplay>
+            <button class="copy-btn" id="data-copy">
+                <span data-copyMsg style="display: none;"> copied</span>
+                <img src="copy.svg" width="23" height="23"></img>
+            </button>
+        </div>
+        
+        <div class="input-container">
+
+            <div class="length-container">
+                <p>Password Length</p>
+                <p id="length">10</p>
+            </div>
+            
+            <input type="range" class="slider" min="1" max="20" value="10" id="slider">
+
+            
+            <div>
+                <input type="checkbox" id="uppercase">
+                <label for="uppercase">Include Upper Case Letters</label>
+            </div>
+            <div>
+                <input type="checkbox" id="lowercase">
+                <label for="lowercase">Include Lower Case Letters</label>
+            </div>
+            <div>
+                <input type="checkbox" id="numbers" checked>
+                <label for="numbers">Include Numbers</label>
+            </div>
+            <div>
+                <input type="checkbox" id="symbols">
+                <label for="symbols">Include Symbols</label>
+            </div>
+
+            
+            <div class="strength-container">
+                <p>Strength</p>
+                <div class="circle" data-strength></div>
+            </div>
+
+            <button class="pass-gen-btn" id="gen-btn">Generate Password</button>
+
+        </div>
+
+    </div>    
+
+    <script src="index.js"></script>
+</body>
+</html>
