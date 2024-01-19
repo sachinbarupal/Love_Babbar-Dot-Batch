@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
@@ -15,7 +15,7 @@
         <div class="display-container">
             <input readonly placeholder="Password" class="display" data-passwordDisplay>
             <button class="copy-btn" id="data-copy">
-                <span data-copyMsg style="display: none;"> copied</span>
+                <span data-copyMsg class="copy-msg"></span>
                 <img src="copy.svg" width="23" height="23"></img>
             </button>
         </div>
@@ -23,7 +23,7 @@
         <div class="input-container">
 
             <div class="length-container">
-                <p>Password Length</p>
+                <p>Password Length : </p>
                 <p id="length">10</p>
             </div>
             

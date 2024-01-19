@@ -17,11 +17,13 @@ const allCheck = document.querySelectorAll('input[type = checkbox]');
 const strength = document.querySelector('[data-strength]');
 const symbols = "!@$%^&*()_*?/[\]+=-<>,~";
 
-output_pass.value = "15";
+output_pass.value = "";
+slider.value = 10;
+let checkCnt = 1;
 
+handleCheckCnt();
 
-
-slider.oninput = function setLength(){
+function setLength(){
     length.innerText = slider.value;
 }
 
@@ -46,7 +48,7 @@ function getRandomUpperCase(){
 }
 
 function getRandomSymbol(){
-    return syms[getRandomInt(0, syms.length)];
+    return symbols[getRandomInt(0, symbols.length - 1)];
 }
 
 function calcStrength(){
@@ -61,20 +63,100 @@ function calcStrength(){
     if(symbolsCheck.checked) hasSymbols = true;
 
 
-    if(hasUpper && hasLower && (hasNumbers || hasSymbols) && pass_len >= 8){
+    if(hasUpper && hasLower && (hasNumbers || hasSymbols) && parseInt(slider.value) >= 8){
         setStrength("#0f0");
     }
-    else if((hasLower || hasUpper) && (hasNumbers || hasSymbols) && pass_len >= 8){
+    else if((hasLower || hasUpper) && (hasNumbers || hasSymbols) && parseInt(slider.value) >= 8){
         setStrength("#ff0");
     }
     else{
-        setStrength("f00");
+        setStrength("#f00");
     }
 }
 
-copy_btn.addEventListener('click', copyToClipboard);
+async function copyContent(){
+    try{
+        await navigator.clipboard.writeText(output_pass.value);
+        copy_msg.innerText = "copied";
+    }
+    catch(e){
+        copy_msg.innerText = "failed";
+    }
 
-function copyToClipboard(){
-    navigator.clipboard.writeText(output_pass.value);
-    copy_msg.style.display = 'block';
+    copy_msg.classList.add('msg-active');
+    setTimeout(()=>{
+        copy_msg.classList.remove('msg-active');
+    }, 200);
 }
+
+
+function handleCheckCnt(){
+    checkCnt = 0;
+    allCheck.forEach( (checkbox) => {
+        if(checkbox.checked) checkCnt++;
+    });
+
+    if(slider.value < checkCnt){
+        slider.value = checkCnt;
+        setLength();
+    }
+}
+
+
+allCheck.forEach( (checkbox) => {
+    checkbox.addEventListener('change', handleCheckCnt);
+});
+
+slider.addEventListener('input', setLength);
+
+copy_btn.addEventListener('click', () => {
+    if(output_pass.value != "") copyContent();
+});
+
+function suffle(password){
+    for(let i=password.length-1; i>0; i--){
+        let j = getRandomInt(0, i);
+        let tmp = password[i];
+        password[i] = password[j];
+        password[j] = tmp;
+    }
+    let str = "";
+    password.forEach((el) => {
+        str += el;
+    });
+    return str;
+}
+
+gen_btn.addEventListener('click', () => {
+    if(checkCnt == 0){
+        alert("Please Check at least 1 check-box");
+    }
+
+    if(parseInt(slider.value) < checkCnt){
+        slider.value = checkCnt;
+        setLength();
+    }
+
+    let password = "";
+
+    let funArr = [];
+
+    if(upperCaseCheck.checked) funArr.push(getRandomUpperCase);
+    if(lowerCaseCheck.checked) funArr.push(getRandomLowerCase);
+    if(numbersCheck.checked) funArr.push(getRandomDigit);
+    if(symbolsCheck.checked) funArr.push(getRandomSymbol);
+
+    for(let i=0; i<funArr.length; i++){
+        password += funArr[i]();
+    }
+
+    for(let i=0; i<slider.value - funArr.length; i++){
+        let idx = getRandomInt(0,funArr.length-1);
+        password += funArr[idx]();
+    }
+
+    password = suffle(Array.from(password));
+
+    output_pass.value = password;
+    calcStrength();
+});
