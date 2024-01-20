@@ -22,13 +22,21 @@ slider.value = 10;
 let checkCnt = 1;
 
 handleCheckCnt();
+setLength();
+setStrength('#ccc');
 
 function setLength(){
     length.innerText = slider.value;
+
+    const min = slider.min;
+    const max = slider.max;
+
+    slider.style.backgroundSize = (  (slider.value - min)*100/(max - min) ) + "% 100%";
 }
 
 function setStrength(color){
     strength.style.backgroundColor = color;
+    strength.style.boxShadow = `0px 0px 12px 1px ${color}`;
 }
 
 function getRandomInt(min, max){
@@ -36,7 +44,7 @@ function getRandomInt(min, max){
 }
 
 function getRandomDigit(){
-    return getRandomInt(0, 9);
+    return getRandomInt(0, 10);
 }
 
 function getRandomLowerCase(){
@@ -48,7 +56,7 @@ function getRandomUpperCase(){
 }
 
 function getRandomSymbol(){
-    return symbols[getRandomInt(0, symbols.length - 1)];
+    return symbols[getRandomInt(0, symbols.length)];
 }
 
 function calcStrength(){
@@ -115,7 +123,7 @@ copy_btn.addEventListener('click', () => {
 
 function suffle(password){
     for(let i=password.length-1; i>0; i--){
-        let j = getRandomInt(0, i);
+        let j = getRandomInt(0, i+1);
         let tmp = password[i];
         password[i] = password[j];
         password[j] = tmp;
@@ -151,7 +159,7 @@ gen_btn.addEventListener('click', () => {
     }
 
     for(let i=0; i<slider.value - funArr.length; i++){
-        let idx = getRandomInt(0,funArr.length-1);
+        let idx = getRandomInt(0,funArr.length);
         password += funArr[idx]();
     }
 

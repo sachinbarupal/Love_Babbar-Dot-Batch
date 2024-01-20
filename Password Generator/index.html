@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Password Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
 <body>
     
@@ -15,7 +18,7 @@
         <div class="display-container">
             <input readonly placeholder="Password" class="display" data-passwordDisplay>
             <button class="copy-btn" id="data-copy">
-                <span data-copyMsg class="copy-msg"></span>
+                <span data-copyMsg class="copy-msg" style="display: none;"></span>
                 <img src="copy.svg" width="23" height="23"></img>
             </button>
         </div>
@@ -23,26 +26,26 @@
         <div class="input-container">
 
             <div class="length-container">
-                <p>Password Length : </p>
+                <p>Password Length</p>
                 <p id="length">10</p>
             </div>
             
             <input type="range" class="slider" min="1" max="20" value="10" id="slider">
 
             
-            <div>
+            <div class="check">
                 <input type="checkbox" id="uppercase">
                 <label for="uppercase">Include Upper Case Letters</label>
             </div>
-            <div>
+            <div class="check">
                 <input type="checkbox" id="lowercase">
                 <label for="lowercase">Include Lower Case Letters</label>
             </div>
-            <div>
+            <div class="check">
                 <input type="checkbox" id="numbers" checked>
                 <label for="numbers">Include Numbers</label>
             </div>
-            <div>
+            <div class="check">
                 <input type="checkbox" id="symbols">
                 <label for="symbols">Include Symbols</label>
             </div>
