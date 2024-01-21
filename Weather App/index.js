@@ -51,6 +51,8 @@ function getFromSessionStorage(){
     const localCordinates = sessionStorage.getItem("user-coordinates");
     if(!localCordinates){
         grantAccessContainer.classList.add('container-active');
+        loadingContainer.classList.remove('container-active');
+        userInfoContainer.classList.remove('container-active');
     }else{
         const loc = JSON.parse(localCordinates);
         fetchUserWeatherInfo(loc);
@@ -92,9 +94,9 @@ function renderWeatherInfo(weatherInfo){
     const cloud = document.querySelector("[data-cloud]");
 
     cityName.innerText = weatherInfo?.name;
-    countryIcon.src = `https://flagcdn.com/h80/${weatherInfo?.sys?.country.toLowerCase()}.png`
+    // countryIcon.src = `https://flagcdn.com/h80/${weatherInfo?.sys?.country.toLowerCase()}.png`
     weatherDesc.innerText = weatherInfo?.weather?.[0]?.description;
-    weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`
+    // weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`
     temp.innerText = parseInt(weatherInfo?.main?.temp) - 273.15;
     windspeed.innerHTML = weatherInfo?.wind?.speed;
     humidity.innerHTML = weatherInfo?.main?.humidity;
@@ -131,3 +133,39 @@ searchTab.addEventListener('click', () => {
     console.log('clicked searchtab');
     switchTab(searchTab);
 });
+
+
+
+
+    // Search Section 
+const searchInput = document.querySelector('[data-searchInput]');
+
+searchForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let cityName = searchInput.value;
+    console.log(cityName);
+    if(cityName === "") return;
+    else fetchSearchWeatherInfo(cityName);
+});
+
+
+async function fetchSearchWeatherInfo(city){
+    loadingContainer.classList.add('container-active');
+    userInfoContainer.classList.remove('container-active');
+    // userInfoContainer.classList.remove('container-active');
+    console.log("finding" + city);
+    console.log(typeof(city));
+    try{
+        console.log(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
+        const data = await response.json();
+        // console.log(data);
+        loadingContainer.classList.remove('container-active');
+        userInfoContainer.classList.add('container-active');
+        renderWeatherInfo(data);
+    }
+    catch(e){
+        alert(e);
+    }
+
+}
