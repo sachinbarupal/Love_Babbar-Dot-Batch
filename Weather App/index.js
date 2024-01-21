@@ -8,6 +8,7 @@ const userContainer = document.querySelector('.weather-container');
 
 const grantAccessContainer = document.querySelector('.grant-location-container');
 const searchForm = document.querySelector('[data-searchForm]');
+const grantAccessBtn = document.querySelector('[data-grantAccess]');
 
 const loadingContainer = document.querySelector('.loading-container');
 const userInfoContainer = document.querySelector('.user-info-container');
@@ -31,7 +32,7 @@ function setTab(tab){
 
         searchForm.classList.remove('container-active');
 
-        getLocation();
+        getFromSessionStorage();
         // grantAccessContainer.classList.add("container-active");
         // loadingContainer.classList.add('container-active');
         // userInfoContainer.classList.add('container-active');
@@ -46,7 +47,7 @@ function setTab(tab){
     }
 } 
 
-function getLocation(){
+function getFromSessionStorage(){
     const localCordinates = sessionStorage.getItem("user-coordinates");
     if(!localCordinates){
         grantAccessContainer.classList.add('container-active');
@@ -64,7 +65,7 @@ async function fetchUserWeatherInfo(coordinates){
 
     try{
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}`);
-        const data = response.json();
+        const data = await  response.json();
 
         loadingContainer.classList.remove('container-active');
         userInfoContainer.classList.add('container-active');
@@ -73,14 +74,15 @@ async function fetchUserWeatherInfo(coordinates){
     }
     catch(e){
         loadingContainer.classList.remove('container-active');
-        alert('API Call Failed');
+        alert('API Call Failed' + e);
         //Baad me
     }
 }
 
-renderWeatherInfo(data){
+function renderWeatherInfo(weatherInfo){
+    console.log(weatherInfo);
     const cityName = document.querySelector("[data-cityName]");
-    const countryIcon = document.querySelector("[countryIcon]");
+    const countryIcon = document.querySelector("[data-countryIcon]");
 
     const weatherIcon = document.querySelector("[data-weatherIcon]");
     const temp = document.querySelector("[data-temp]");
@@ -89,10 +91,37 @@ renderWeatherInfo(data){
     const humidity = document.querySelector("[data-humidity]");
     const cloud = document.querySelector("[data-cloud]");
 
-    
+    cityName.innerText = weatherInfo?.name;
+    countryIcon.src = `https://flagcdn.com/h80/${weatherInfo?.sys?.country.toLowerCase()}.png`
+    weatherDesc.innerText = weatherInfo?.weather?.[0]?.description;
+    weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`
+    temp.innerText = parseInt(weatherInfo?.main?.temp) - 273.15;
+    windspeed.innerHTML = weatherInfo?.wind?.speed;
+    humidity.innerHTML = weatherInfo?.main?.humidity;
+    cloud.innerHTML = weatherInfo?.clouds?.all;
 }
 
+grantAccessBtn.addEventListener('click', getLocation);
 
+function getLocation(){
+    if(navigator.geolocation){
+        grantAccessContainer.classList.remove('container-active');
+    loadingContainer.classList.add('container-active');
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }else{
+        alert('machine does not support geoLocation')
+    }
+}
+
+function showPosition(position){
+    const userCordinates = {
+        lat: position.coords.latitude,
+        long: position.coords.longitude,
+    }
+    
+    sessionStorage.setItem("user-coordinates",  JSON.stringify(userCordinates));
+    fetchUserWeatherInfo(userCordinates);
+}
 
 userTab.addEventListener('click', () => {
     console.log('clicked usertab');
