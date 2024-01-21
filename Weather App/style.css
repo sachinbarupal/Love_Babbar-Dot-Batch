@@ -1,0 +1,19 @@
+.tab.current-tab{
+    background-color: plum;
+    border-radius: 5px;
+}
+.loading-container{
+    scale: 0;
+}
+.user-info-container{
+    scale: 0;
+}
+.grant-location-container{
+    scale: 0;
+}
+.form-container{
+    scale: 0;
+}
+.container-active{
+    scale: 1;
+}
