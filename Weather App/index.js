@@ -31,11 +31,10 @@ function setTab(tab){
     if(tab == userTab){
 
         searchForm.classList.remove('container-active');
-
+        userInfoContainer.classList.remove('container-active');
         getFromSessionStorage();
         // grantAccessContainer.classList.add("container-active");
         // loadingContainer.classList.add('container-active');
-        // userInfoContainer.classList.add('container-active');
 
     }
     else{
@@ -94,13 +93,20 @@ function renderWeatherInfo(weatherInfo){
     const cloud = document.querySelector("[data-cloud]");
 
     cityName.innerText = weatherInfo?.name;
-    // countryIcon.src = `https://flagcdn.com/h80/${weatherInfo?.sys?.country.toLowerCase()}.png`
+    countryIcon.src = `https://flagcdn.com/h80/${weatherInfo?.sys?.country.toLowerCase()}.png`
     weatherDesc.innerText = weatherInfo?.weather?.[0]?.description;
-    // weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`
-    temp.innerText = parseInt(weatherInfo?.main?.temp) - 273.15;
+    weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`
+    temp.innerText = (parseInt(weatherInfo?.main?.temp) - 273.15).toFixed(2) + " °C";
     windspeed.innerHTML = weatherInfo?.wind?.speed;
     humidity.innerHTML = weatherInfo?.main?.humidity;
     cloud.innerHTML = weatherInfo?.clouds?.all;
+
+    if(currentTab == searchTab){
+        userInfoContainer.classList.add("searchTab-userInfo");
+    }else{
+        userInfoContainer.classList.remove("searchTab-userInfo");
+    }
+
 }
 
 grantAccessBtn.addEventListener('click', getLocation);
