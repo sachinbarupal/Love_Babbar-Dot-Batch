@@ -94,7 +94,7 @@ async function copyContent(){
     copy_msg.classList.add('msg-active');
     setTimeout(()=>{
         copy_msg.classList.remove('msg-active');
-    }, 200);
+    }, 1500);
 }
 
 

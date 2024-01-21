@@ -235,3 +235,24 @@ h1{
     border: none;
     outline: none;
 }
+.copy-btn img{
+    cursor: pointer;
+} 
+.copy-msg{
+    position: absolute;
+    top: -35px; 
+    left: -25px;
+    background-color: var(--vb-violet2);
+    color:var(--vb-yellow);
+    font-size: 1.25rem;
+    padding: 5px 10px;
+    border-radius: 1rem;
+    opacity: 0;
+    transform: scale(0); 
+    transition: all 250ms ease-in-out;
+}
+
+.copy-msg.msg-active{
+    opacity: 1;
+    transform: scale(1);
+}
