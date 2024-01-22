@@ -33,9 +33,6 @@ function setTab(tab){
         searchForm.classList.remove('container-active');
         userInfoContainer.classList.remove('container-active');
         getFromSessionStorage();
-        // grantAccessContainer.classList.add("container-active");
-        // loadingContainer.classList.add('container-active');
-
     }
     else{
         searchForm.classList.add('container-active');
@@ -76,12 +73,10 @@ async function fetchUserWeatherInfo(coordinates){
     catch(e){
         loadingContainer.classList.remove('container-active');
         alert('API Call Failed' + e);
-        //Baad me
     }
 }
 
 function renderWeatherInfo(weatherInfo){
-    console.log(weatherInfo);
     const cityName = document.querySelector("[data-cityName]");
     const countryIcon = document.querySelector("[data-countryIcon]");
 
@@ -96,10 +91,10 @@ function renderWeatherInfo(weatherInfo){
     countryIcon.src = `https://flagcdn.com/h80/${weatherInfo?.sys?.country.toLowerCase()}.png`
     weatherDesc.innerText = weatherInfo?.weather?.[0]?.description;
     weatherIcon.src = `https://openweathermap.org/img/w/${weatherInfo?.weather?.[0]?.icon}.png`
-    temp.innerText = (parseInt(weatherInfo?.main?.temp) - 273.15).toFixed(2) + " °C";
-    windspeed.innerHTML = weatherInfo?.wind?.speed;
-    humidity.innerHTML = weatherInfo?.main?.humidity;
-    cloud.innerHTML = weatherInfo?.clouds?.all;
+    temp.innerText = `${(parseInt(weatherInfo?.main?.temp) - 273.15).toFixed(2)} °C`;
+    windspeed.innerHTML = `${weatherInfo?.wind?.speed} m/s`;
+    humidity.innerHTML = `${weatherInfo?.main?.humidity}%`;
+    cloud.innerHTML = `${weatherInfo?.clouds?.all}%`;
 
     if(currentTab == searchTab){
         userInfoContainer.classList.add("searchTab-userInfo");
@@ -132,24 +127,17 @@ function showPosition(position){
 }
 
 userTab.addEventListener('click', () => {
-    console.log('clicked usertab');
     switchTab(userTab);
 });
 searchTab.addEventListener('click', () => {
-    console.log('clicked searchtab');
     switchTab(searchTab);
 });
 
-
-
-
-    // Search Section 
 const searchInput = document.querySelector('[data-searchInput]');
 
 searchForm.addEventListener("submit", (e) => {
     e.preventDefault();
     let cityName = searchInput.value;
-    console.log(cityName);
     if(cityName === "") return;
     else fetchSearchWeatherInfo(cityName);
 });
@@ -158,14 +146,9 @@ searchForm.addEventListener("submit", (e) => {
 async function fetchSearchWeatherInfo(city){
     loadingContainer.classList.add('container-active');
     userInfoContainer.classList.remove('container-active');
-    // userInfoContainer.classList.remove('container-active');
-    console.log("finding" + city);
-    console.log(typeof(city));
     try{
-        console.log(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
         const data = await response.json();
-        // console.log(data);
         loadingContainer.classList.remove('container-active');
         userInfoContainer.classList.add('container-active');
         renderWeatherInfo(data);
