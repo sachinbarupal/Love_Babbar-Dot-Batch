@@ -241,3 +241,16 @@ h1{
 .form-container.container-active{
     display: flex;
 }
+
+.error404{
+    display: none;
+    justify-content: center;
+}
+
+.error404.container-active{
+    display: flex;
+}
+
+.error404 img{
+    width: 40%;
+}

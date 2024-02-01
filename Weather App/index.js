@@ -12,6 +12,7 @@ const grantAccessBtn = document.querySelector('[data-grantAccess]');
 
 const loadingContainer = document.querySelector('.loading-container');
 const userInfoContainer = document.querySelector('.user-info-container');
+const errorContainer = document.getElementById('error404');
 
 let currentTab = userTab;
 
@@ -96,12 +97,6 @@ function renderWeatherInfo(weatherInfo){
     humidity.innerHTML = `${weatherInfo?.main?.humidity}%`;
     cloud.innerHTML = `${weatherInfo?.clouds?.all}%`;
 
-    if(currentTab == searchTab){
-        userInfoContainer.classList.add("searchTab-userInfo");
-    }else{
-        userInfoContainer.classList.remove("searchTab-userInfo");
-    }
-
 }
 
 grantAccessBtn.addEventListener('click', getLocation);
@@ -109,7 +104,7 @@ grantAccessBtn.addEventListener('click', getLocation);
 function getLocation(){
     if(navigator.geolocation){
         grantAccessContainer.classList.remove('container-active');
-    loadingContainer.classList.add('container-active');
+        loadingContainer.classList.add('container-active');
         navigator.geolocation.getCurrentPosition(showPosition);
     }else{
         alert('machine does not support geoLocation')
@@ -145,13 +140,23 @@ searchForm.addEventListener("submit", (e) => {
 
 async function fetchSearchWeatherInfo(city){
     loadingContainer.classList.add('container-active');
+    errorContainer.classList.remove('container-active');
     userInfoContainer.classList.remove('container-active');
     try{
         const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}`)
         const data = await response.json();
         loadingContainer.classList.remove('container-active');
-        userInfoContainer.classList.add('container-active');
-        renderWeatherInfo(data);
+
+        const cityName = data?.name;
+        console.log(cityName);
+        if(cityName == undefined){
+            errorContainer.classList.add('container-active');
+        }
+        else{
+            errorContainer.classList.remove('container-active');
+            userInfoContainer.classList.add('container-active');
+            renderWeatherInfo(data);
+        }
     }
     catch(e){
         alert(e);
