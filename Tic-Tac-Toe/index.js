@@ -104,25 +104,21 @@ function handleMove(index){
         else if(playingAi){
             swapTurn();
             setPlayer();
-
-            highlight();
-        
-            setTimeout(() => {
-                bestMove();
-                let winPos = checkGameOver();
-                if(winPos != undefined){
-                    showWin(winPos);
-                }
-                else if(totalMoves == 9){
-                    alert("GAME TIED");
-                    currPlayer.textContent = "GAME TIED (Start A New Game)";
-                    gameEnded = true;
-                }
-                else{
-                    swapTurn();
-                    setPlayer();    
-                }
-            }, 700);
+            
+            bestMove();
+            let winPos = checkGameOver();
+            if(winPos != undefined){
+                showWin(winPos);
+            }
+            else if(totalMoves == 9){
+                alert("GAME TIED");
+                currPlayer.textContent = "GAME TIED (Start A New Game)";
+                gameEnded = true;
+            }
+            else{
+                swapTurn();
+                setPlayer();    
+            }
         }
         else{
             swapTurn();    
