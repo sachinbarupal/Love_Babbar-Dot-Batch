@@ -106,7 +106,11 @@ boxes.forEach((box, index) => {
     });
 });
 
-newGameBtn.addEventListener('click', startGame);
+newGameBtn.addEventListener('click',() => {
+    currPlayer.classList.remove('active');
+    ticTacToe.classList.remove('active');
+    menu.classList.remove('active');
+});
 
 vsCompBtn.addEventListener('click', () => {
     alert('iska code likha nhi h bhai...Human wala hi khel le');
