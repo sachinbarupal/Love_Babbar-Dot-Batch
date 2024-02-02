@@ -52,6 +52,8 @@ function startGame(){
 function showWin(pos){
     gameEnded = true;
     
+    currPlayer.textContent = `Winner : ${currentPlayer}`;
+
     boxes[pos[0]].classList.add('win');
     boxes[pos[1]].classList.add('win');
     boxes[pos[2]].classList.add('win');
@@ -88,15 +90,19 @@ function handleMove(index){
     
     if(gameGrid[index] === "" && gameEnded == false){
         placeMove(index);
-        swapTurn();    
-        setPlayer();
         totalMoves++;
-        
         checkGameOver();
+        
         if(totalMoves == 9 && !gameEnded){
             alert("GAME TIED");
+            currPlayer.textContent = "GAME TIED (Start A New Game)";
             gameEnded = true;
         }
+        else if(!gameEnded){
+            swapTurn();    
+            setPlayer();
+        }
+        
     }
 }
 
