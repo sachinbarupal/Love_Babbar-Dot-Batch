@@ -51,7 +51,7 @@ function startGame(){
         box.classList.remove('win');
         box.classList.remove('no-pointer');
     });
-    newGameBtn.classList.remove('active');
+    newGameBtn.classList.add('active');
 }
 
 function showWin(pos){    
@@ -88,8 +88,6 @@ function placeMove(index){
 function handleMove(index){
     let result = checkGameOver();
     if(result != undefined) return;
-    if(totalMoves == 0)
-        newGameBtn.classList.add('active');
     
     if(gameGrid[index] === ''){
         placeMove(index);
@@ -106,21 +104,25 @@ function handleMove(index){
         else if(playingAi){
             swapTurn();
             setPlayer();
-            bestMove();
-            let winPos = checkGameOver();
-            if(winPos != undefined){
-                alert("LOL!! Nhi Jit skta bro mujhse tuu!!");
-                showWin(winPos);
-            }
-            else if(totalMoves == 9){
-                alert("GAME TIED");
-                currPlayer.textContent = "GAME TIED (Start A New Game)";
-                gameEnded = true;
-            }
-            else{
-                swapTurn();
-                setPlayer();    
-            }
+
+            highlight();
+        
+            setTimeout(() => {
+                bestMove();
+                let winPos = checkGameOver();
+                if(winPos != undefined){
+                    showWin(winPos);
+                }
+                else if(totalMoves == 9){
+                    alert("GAME TIED");
+                    currPlayer.textContent = "GAME TIED (Start A New Game)";
+                    gameEnded = true;
+                }
+                else{
+                    swapTurn();
+                    setPlayer();    
+                }
+            }, 700);
         }
         else{
             swapTurn();    
@@ -130,7 +132,6 @@ function handleMove(index){
 }
 
 function bestMove(){
-    //AI to get the best Move
     let bestScore = -Infinity;
     let bestMove;
     for(let i=0; i<9; i++){
@@ -156,7 +157,6 @@ function bestMove(){
 function miniMax(depth, player){
     if(maxDepth == 0) return 1;
     if(maxDepth == 1 && depth > maxDepth) return 0;
-
     let result = checkGameOver();
     if(result != undefined){
         return gameGrid[result[0]] === 'X' ? -1 : 1;
@@ -209,6 +209,8 @@ newGameBtn.addEventListener('click',() => {
     currPlayer.classList.remove('active');
     ticTacToe.classList.remove('active');
     menu.classList.remove('active');
+    newGameBtn.classList.remove('active');
+    selectLvl.classList.remove('active');
 });
 
 vsCompBtn.addEventListener('click', () => {
@@ -241,3 +243,22 @@ lvlBtns.forEach((btn, index) => {
     });
 })
 
+function highlight(){
+    let idx = [];
+    boxes.forEach((box, index) => {
+        if(box.textContent === '') idx.push(index);
+    });
+    
+    let blinks = 5;
+    blink(blinks, idx);
+}
+function blink(blinks, idx) {
+    if(blinks >= 0){
+        setTimeout(() => { blink(blinks - 1, idx); }, 100);
+        const i = Math.floor(Math.random() * idx.length);
+        boxes[idx[i]].classList.add('highlight');
+        setTimeout(() => {
+            boxes[idx[i]].classList.remove('highlight');
+        }, 100);
+    }
+}
