@@ -100,7 +100,6 @@ function handleMove(index){
         else if(playingAi){
             swapTurn();
             setPlayer();
-            totalMoves++;
             bestMove();
             let winPos = checkGameOver();
             if(winPos != undefined){
@@ -141,7 +140,7 @@ function bestMove(){
             }
         }
     }
-
+    totalMoves++;
     placeMove(bestMove);
 }
 
