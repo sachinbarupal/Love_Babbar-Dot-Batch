@@ -7,10 +7,16 @@ const menu = document.querySelector('.menu');
 const vsHumanBtn = document.getElementById('vsHuman');
 const vsCompBtn = document.getElementById('vsComp');
 
+const selectLvl = document.querySelector('.select-lvl');
+const lvlBtns = document.querySelectorAll('.lvl-btn');
+
+
 let currentPlayer = "X";
 let gameGrid;
 let totalMoves = 0;
 let playingAi = false;
+let maxDepth = -1;
+
 
 const winningPositions = [
     [0, 1, 2],
@@ -145,12 +151,12 @@ function bestMove(){
     placeMove(bestMove);
 }
 
-let scores = {
-    X:-1,
-    O:1
-}
+
 
 function miniMax(depth, player){
+    if(maxDepth == 0) return 1;
+    if(maxDepth == 1 && depth > maxDepth) return 0;
+
     let result = checkGameOver();
     if(result != undefined){
         return gameGrid[result[0]] === 'X' ? -1 : 1;
@@ -159,7 +165,6 @@ function miniMax(depth, player){
         return 0;
     }
     
-
     if(player){
         let bestScore = Infinity;
         for(let i=0; i<9; i++){
@@ -207,11 +212,13 @@ newGameBtn.addEventListener('click',() => {
 });
 
 vsCompBtn.addEventListener('click', () => {
-    // alert('iska code likha nhi h bhai...Human wala hi khel le');
-    playingAi = true;
-    menu.classList.add('active');
-    ticTacToe.classList.add('active');
-    startGame();
+    if(!selectLvl.classList.contains('active')){
+        selectLvl.classList.add('active');
+        playingAi = true;
+    }else{
+        selectLvl.classList.remove('active');
+        playingAi = false;
+    }
 });
 
 vsHumanBtn.addEventListener('click', () => {
@@ -220,4 +227,17 @@ vsHumanBtn.addEventListener('click', () => {
     playingAi = false;
     startGame();
 });
+
+function levelSelection(index){
+    menu.classList.add('active');
+    ticTacToe.classList.add('active');
+    maxDepth = index;
+    startGame();
+}
+
+lvlBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () =>{
+        levelSelection(index);
+    });
+})
 
