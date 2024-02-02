@@ -2,9 +2,15 @@ const boxes = document.querySelectorAll('.box');
 const currPlayer = document.querySelector('.current-player');
 const newGameBtn = document.querySelector('.btn');
 
+const ticTacToe = document.querySelector('.tic-tac-toe');
+const menu = document.querySelector('.menu');
+const vsHumanBtn = document.getElementById('vsHuman');
+const vsCompBtn = document.getElementById('vsComp');
+
 let currentPlayer = "X";
 let gameGrid;
 let gameEnded = false;
+let totalMoves = 0;
 
 const winningPositions = [
     [0, 1, 2],
@@ -29,8 +35,10 @@ function swapTurn(){
 }
 
 function startGame(){
+    currPlayer.classList.add('active');
     currentPlayer = "X";
     gameEnded = false;
+    totalMoves = 0;
     setPlayer();
     gameGrid = ["", "", "", "", "", "", "", "", ""];
     boxes.forEach((box) => {
@@ -40,7 +48,6 @@ function startGame(){
     });
     newGameBtn.classList.remove('active');
 }
-startGame();
 
 function showWin(pos){
     gameEnded = true;
@@ -76,15 +83,20 @@ function placeMove(index){
 }
 
 function handleMove(index){
-    if(!newGameBtn.classList.contains('active'))
+    if(totalMoves == 0)
         newGameBtn.classList.add('active');
-
+    
     if(gameGrid[index] === "" && gameEnded == false){
         placeMove(index);
         swapTurn();    
         setPlayer();
+        totalMoves++;
         
         checkGameOver();
+        if(totalMoves == 9 && !gameEnded){
+            alert("GAME TIED");
+            gameEnded = true;
+        }
     }
 }
 
@@ -95,3 +107,14 @@ boxes.forEach((box, index) => {
 });
 
 newGameBtn.addEventListener('click', startGame);
+
+vsCompBtn.addEventListener('click', () => {
+    alert('iska code likha nhi h bhai...Human wala hi khel le');
+});
+
+vsHumanBtn.addEventListener('click', () => {
+    menu.classList.add('active');
+    ticTacToe.classList.add('active');
+    startGame();
+});
+
