@@ -104,6 +104,7 @@ function handleMove(index){
             let winPos = checkGameOver();
             if(winPos != undefined){
                 showWin(winPos);
+                alert('LOL!! Nhi Jit skta bro mujhse tuu!!');
             }
             else if(totalMoves == 9){
                 alert("GAME TIED");
